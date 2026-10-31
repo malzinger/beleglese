@@ -1,1 +1,765 @@
-{}
+{
+  "01-papierhaus": {
+    "model": "claude-opus-5-5",
+    "extraction": {
+      "documentType": "invoice",
+      "language": "de",
+      "currency": "EUR",
+      "amountsAre": "net",
+      "vendor": {
+        "name": {
+          "value": "Papierhaus Lindner GmbH",
+          "source": "Papierhaus Lindner GmbH",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Gohliser Straße 41, 04155 Leipzig",
+          "source": "Papierhaus Lindner GmbH · Gohliser Straße 41 · 04155 Leipzig",
+          "confidence": "high"
+        },
+        "vatId": {
+          "value": "DE284619375",
+          "source": "USt-IdNr.: DE 284 619 375",
+          "confidence": "high"
+        },
+        "taxNumber": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        }
+      },
+      "recipient": {
+        "name": {
+          "value": "Studio Nordlicht UG (haftungsbeschränkt)",
+          "source": "Studio Nordlicht UG (haftungsbeschränkt)",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "z. Hd. Frau Petersen, Karl-Heine-Straße 12, 04229 Leipzig",
+          "source": "z. Hd. Frau Petersen Karl-Heine-Straße 12 04229 Leipzig",
+          "confidence": "high"
+        }
+      },
+      "invoiceNumber": {
+        "value": "RE-2026-0412",
+        "source": "Rechnungsnummer RE-2026-0412",
+        "confidence": "high"
+      },
+      "issueDate": {
+        "value": "2026-10-08",
+        "source": "Rechnungsdatum 08.10.2026",
+        "confidence": "high"
+      },
+      "serviceDate": {
+        "value": "06.10.2026",
+        "source": "Lieferdatum 06.10.2026",
+        "confidence": "high"
+      },
+      "dueDate": {
+        "value": "2026-10-22",
+        "source": "Zahlbar innerhalb von 14 Tagen bis zum 22.10.2026 ohne Abzug.",
+        "confidence": "high"
+      },
+      "lineItems": [
+        {
+          "description": "Kopierpapier A4, 80 g/m², 500 Blatt",
+          "quantity": 5,
+          "unitPrice": 4.9,
+          "vatRate": 19,
+          "amount": 24.5,
+          "source": "1 Kopierpapier A4, 80 g/m², 500 Blatt 5 4,90 € 24,50 €"
+        },
+        {
+          "description": "Toner schwarz, kompatibel LaserJet M404",
+          "quantity": 2,
+          "unitPrice": 38.9,
+          "vatRate": 19,
+          "amount": 77.8,
+          "source": "2 Toner schwarz, kompatibel LaserJet M404 2 38,90 € 77,80 €"
+        },
+        {
+          "description": "Ordner breit 8 cm, Graphit",
+          "quantity": 10,
+          "unitPrice": 2.79,
+          "vatRate": 19,
+          "amount": 27.9,
+          "source": "3 Ordner breit 8 cm, Graphit 10 2,79 € 27,90 €"
+        },
+        {
+          "description": "Bürodrehstuhl „Ergo 3“, Stoff anthrazit",
+          "quantity": 1,
+          "unitPrice": 189,
+          "vatRate": 19,
+          "amount": 189,
+          "source": "4 Bürodrehstuhl „Ergo 3“, Stoff anthrazit 1 189,00 € 189,00 €"
+        }
+      ],
+      "vatBreakdown": [
+        {
+          "rate": 19,
+          "net": 319.2,
+          "vat": 60.65
+        }
+      ],
+      "totals": {
+        "net": {
+          "value": 319.2,
+          "source": "Summe netto 319,20 €",
+          "confidence": "high"
+        },
+        "vat": {
+          "value": 60.65,
+          "source": "zzgl. 19 % USt. 60,65 €",
+          "confidence": "high"
+        },
+        "gross": {
+          "value": 379.85,
+          "source": "Rechnungsbetrag 379,85 €",
+          "confidence": "high"
+        },
+        "tip": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        }
+      },
+      "payment": {
+        "iban": {
+          "value": "DE89370400440532013000",
+          "source": "IBAN: DE89 3704 0044 0532 0130 00",
+          "confidence": "high"
+        },
+        "bic": {
+          "value": "COBADEFFXXX",
+          "source": "BIC: COBADEFFXXX",
+          "confidence": "high"
+        },
+        "method": {
+          "value": "transfer",
+          "source": "Bitte geben Sie bei der Überweisung die Rechnungsnummer an.",
+          "confidence": "medium"
+        }
+      },
+      "reverseCharge": false,
+      "booking": {
+        "account": "4930",
+        "accountName": "Bürobedarf",
+        "reason": {
+          "de": "Die Rechnung umfasst Büromaterial wie Papier, Toner und Ordner sowie einen Bürostuhl unter 250 € netto, der sofort als Aufwand gebucht werden kann.",
+          "en": "The invoice covers office supplies such as paper, toner and binders plus an office chair below 250 EUR net, which can be expensed immediately."
+        }
+      }
+    },
+    "inputTokens": 5712,
+    "outputTokens": 1833,
+    "costUsd": 0.059508,
+    "latencyMs": 19708,
+    "fallbackUsed": false,
+    "recordedAt": "2026-10-31T12:56:53.029Z"
+  },
+  "02-trattoria": {
+    "model": "claude-opus-5-5",
+    "extraction": {
+      "documentType": "receipt",
+      "language": "de",
+      "currency": "EUR",
+      "amountsAre": "gross",
+      "vendor": {
+        "name": {
+          "value": "Trattoria Sole",
+          "source": "TRATTORIA SOLE",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Ehrenstraße 58, 50672 Köln",
+          "source": "Ehrenstraße 58 · 50672 Köln",
+          "confidence": "high"
+        },
+        "vatId": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        },
+        "taxNumber": {
+          "value": "214/5678/1234",
+          "source": "St.-Nr. 214/5678/1234",
+          "confidence": "high"
+        }
+      },
+      "recipient": {
+        "name": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        },
+        "address": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        }
+      },
+      "invoiceNumber": {
+        "value": "0387",
+        "source": "Bon 0387",
+        "confidence": "high"
+      },
+      "issueDate": {
+        "value": "2026-10-17",
+        "source": "17.10.2026",
+        "confidence": "high"
+      },
+      "serviceDate": {
+        "value": null,
+        "source": null,
+        "confidence": "high"
+      },
+      "dueDate": {
+        "value": null,
+        "source": null,
+        "confidence": "high"
+      },
+      "lineItems": [
+        {
+          "description": "Pizza Margherita",
+          "quantity": 2,
+          "unitPrice": 9.5,
+          "vatRate": 7,
+          "amount": 19,
+          "source": "2 x Pizza Margherita 19,00 A à 9,50"
+        },
+        {
+          "description": "Saltimbocca alla Romana",
+          "quantity": 1,
+          "unitPrice": null,
+          "vatRate": 7,
+          "amount": 18.9,
+          "source": "1 x Saltimbocca alla Romana 18,90 A"
+        },
+        {
+          "description": "Acqua minerale 0,75l",
+          "quantity": 2,
+          "unitPrice": 6.4,
+          "vatRate": 19,
+          "amount": 12.8,
+          "source": "2 x Acqua minerale 0,75l 12,80 B à 6,40"
+        },
+        {
+          "description": "Espresso",
+          "quantity": 1,
+          "unitPrice": null,
+          "vatRate": 19,
+          "amount": 2.6,
+          "source": "1 x Espresso 2,60 B"
+        }
+      ],
+      "vatBreakdown": [
+        {
+          "rate": 7,
+          "net": 35.42,
+          "vat": 2.48
+        },
+        {
+          "rate": 19,
+          "net": 12.94,
+          "vat": 2.46
+        }
+      ],
+      "totals": {
+        "net": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        },
+        "vat": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        },
+        "gross": {
+          "value": 53.3,
+          "source": "SUMME EUR 53,30",
+          "confidence": "high"
+        },
+        "tip": {
+          "value": 4.7,
+          "source": "Trinkgeld 4,70",
+          "confidence": "high"
+        }
+      },
+      "payment": {
+        "iban": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        },
+        "bic": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        },
+        "method": {
+          "value": "card",
+          "source": "Gegeben Kartenzahlung",
+          "confidence": "high"
+        }
+      },
+      "reverseCharge": false,
+      "booking": {
+        "account": "4650",
+        "accountName": "Bewirtungskosten",
+        "reason": {
+          "de": "Restaurantrechnung für Speisen und Getränke wird als Bewirtungskosten gebucht.",
+          "en": "A restaurant bill for food and drinks is booked as entertainment expenses."
+        }
+      }
+    },
+    "inputTokens": 4098,
+    "outputTokens": 1139,
+    "costUsd": 0.039172,
+    "latencyMs": 10534,
+    "fallbackUsed": false,
+    "recordedAt": "2026-10-31T12:57:03.565Z"
+  },
+  "03-elektro": {
+    "model": "claude-opus-5-5",
+    "extraction": {
+      "documentType": "invoice",
+      "language": "de",
+      "currency": "EUR",
+      "amountsAre": "net",
+      "vendor": {
+        "name": {
+          "value": "Elektro Brandt e.K.",
+          "source": "Elektro Brandt e.K.",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Am Hasenberge 7, 22337 Hamburg",
+          "source": "Am Hasenberge 7 · 22337 Hamburg",
+          "confidence": "high"
+        },
+        "vatId": {
+          "value": "DE315072641",
+          "source": "USt-IdNr. DE315072641",
+          "confidence": "high"
+        },
+        "taxNumber": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        }
+      },
+      "recipient": {
+        "name": {
+          "value": "Hausverwaltung Kessler GmbH",
+          "source": "Hausverwaltung Kessler GmbH",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Fuhlsbüttler Straße 211, 22307 Hamburg",
+          "source": "Fuhlsbüttler Straße 211 22307 Hamburg",
+          "confidence": "high"
+        }
+      },
+      "invoiceNumber": {
+        "value": "2026-1187",
+        "source": "2026-1187",
+        "confidence": "high"
+      },
+      "issueDate": {
+        "value": "2026-10-30",
+        "source": "30.10.2026",
+        "confidence": "high"
+      },
+      "serviceDate": {
+        "value": "27.10.2026",
+        "source": "AUSFÜHRUNG 27.10.2026",
+        "confidence": "high"
+      },
+      "dueDate": {
+        "value": "2026-11-13",
+        "source": "Zahlbar bis 13.11.2026",
+        "confidence": "high"
+      },
+      "lineItems": [
+        {
+          "description": "Arbeitszeit Elektromeister",
+          "quantity": 3.5,
+          "unitPrice": 68,
+          "vatRate": 19,
+          "amount": 238,
+          "source": "01 Arbeitszeit Elektromeister 3,5 Std 68,00 238,00"
+        },
+        {
+          "description": "Arbeitszeit Elektrogeselle",
+          "quantity": 3.5,
+          "unitPrice": 52,
+          "vatRate": 19,
+          "amount": 182,
+          "source": "02 Arbeitszeit Elektrogeselle 3,5 Std 52,00 182,00"
+        },
+        {
+          "description": "Schuko-Steckdose UP, reinweiß, inkl. Rahmen",
+          "quantity": 6,
+          "unitPrice": 7.4,
+          "vatRate": 19,
+          "amount": 44.4,
+          "source": "03 Schuko-Steckdose UP, reinweiß, inkl. Rahmen 6 St 7,40 44,40"
+        },
+        {
+          "description": "Anfahrtspauschale Hamburg-Nord",
+          "quantity": 1,
+          "unitPrice": 35,
+          "vatRate": 19,
+          "amount": 35,
+          "source": "04 Anfahrtspauschale Hamburg-Nord 1 psch 35,00 35,00"
+        }
+      ],
+      "vatBreakdown": [
+        {
+          "rate": 19,
+          "net": 509.4,
+          "vat": 96.79
+        }
+      ],
+      "totals": {
+        "net": {
+          "value": 509.4,
+          "source": "Nettobetrag 509,40 €",
+          "confidence": "high"
+        },
+        "vat": {
+          "value": 96.79,
+          "source": "Umsatzsteuer 19 % 96,79 €",
+          "confidence": "high"
+        },
+        "gross": {
+          "value": 606.19,
+          "source": "Gesamtbetrag 606,19 €",
+          "confidence": "high"
+        },
+        "tip": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        }
+      },
+      "payment": {
+        "iban": {
+          "value": "DE02120300000000202051",
+          "source": "IBAN DE02 1203 0000 0000 2020 51",
+          "confidence": "high"
+        },
+        "bic": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        },
+        "method": {
+          "value": "transfer",
+          "source": "Zahlbar bis 13.11.2026 auf das unten genannte Konto.",
+          "confidence": "medium"
+        }
+      },
+      "reverseCharge": false,
+      "booking": {
+        "account": "4260",
+        "accountName": "Instandhaltung betrieblicher Räume",
+        "reason": {
+          "de": "Elektroarbeiten zur Erneuerung der Treppenhausbeleuchtung und Steckdosen sind Instandhaltungsaufwand für Räume.",
+          "en": "Electrical work renewing staircase lighting and sockets is maintenance expense for premises."
+        }
+      }
+    },
+    "inputTokens": 5700,
+    "outputTokens": 1626,
+    "costUsd": 0.05532,
+    "latencyMs": 12906,
+    "fallbackUsed": false,
+    "recordedAt": "2026-10-31T12:57:16.472Z"
+  },
+  "04-fernhill": {
+    "model": "claude-opus-5-5",
+    "extraction": {
+      "documentType": "invoice",
+      "language": "en",
+      "currency": "EUR",
+      "amountsAre": "net",
+      "vendor": {
+        "name": {
+          "value": "Fernhill Cloud Software Ltd",
+          "source": "Fernhill Cloud Software Ltd",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "14 Harcourt Street, Dublin 2, D02 YX88, Ireland",
+          "source": "14 Harcourt Street Dublin 2, D02 YX88 Ireland",
+          "confidence": "high"
+        },
+        "vatId": {
+          "value": "IE4815162LH",
+          "source": "VAT IE4815162LH",
+          "confidence": "high"
+        },
+        "taxNumber": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        }
+      },
+      "recipient": {
+        "name": {
+          "value": "Studio Nordlicht UG (haftungsbeschränkt)",
+          "source": "Studio Nordlicht UG (haftungsbeschränkt)",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Karl-Heine-Straße 12, 04229 Leipzig, Germany",
+          "source": "Karl-Heine-Straße 12 04229 Leipzig Germany",
+          "confidence": "high"
+        }
+      },
+      "invoiceNumber": {
+        "value": "FH-2026-10-0931",
+        "source": "Invoice no. FH-2026-10-0931",
+        "confidence": "high"
+      },
+      "issueDate": {
+        "value": "2026-10-01",
+        "source": "Issued 1 October 2026",
+        "confidence": "high"
+      },
+      "serviceDate": {
+        "value": "1–31 Oct 2026",
+        "source": "Period 1–31 Oct 2026",
+        "confidence": "high"
+      },
+      "dueDate": {
+        "value": "2026-10-15",
+        "source": "Due 15 October 2026",
+        "confidence": "high"
+      },
+      "lineItems": [
+        {
+          "description": "Team plan, monthly (Seats billed for October 2026)",
+          "quantity": 12,
+          "unitPrice": 24,
+          "vatRate": null,
+          "amount": 288,
+          "source": "Team plan, monthly Seats billed for October 2026 12 €24.00 €288.00"
+        },
+        {
+          "description": "Additional storage, 500 GB (Add-on, monthly)",
+          "quantity": 1,
+          "unitPrice": 15,
+          "vatRate": null,
+          "amount": 15,
+          "source": "Additional storage, 500 GB Add-on, monthly 1 €15.00 €15.00"
+        }
+      ],
+      "vatBreakdown": [
+        {
+          "rate": 0,
+          "net": 303,
+          "vat": 0
+        }
+      ],
+      "totals": {
+        "net": {
+          "value": 303,
+          "source": "Subtotal €303.00",
+          "confidence": "high"
+        },
+        "vat": {
+          "value": 0,
+          "source": "VAT (0%, reverse charge) €0.00",
+          "confidence": "high"
+        },
+        "gross": {
+          "value": 303,
+          "source": "Total due (EUR) €303.00",
+          "confidence": "high"
+        },
+        "tip": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        }
+      },
+      "payment": {
+        "iban": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        },
+        "bic": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        },
+        "method": {
+          "value": "card",
+          "source": "Paid by card ending 4242 on 1 October 2026",
+          "confidence": "high"
+        }
+      },
+      "reverseCharge": true,
+      "booking": {
+        "account": "4964",
+        "accountName": "Aufwendungen für die zeitlich befristete Überlassung von Rechten (Lizenzen, Konzessionen)",
+        "reason": {
+          "de": "Monatliches Cloud-Software-Abonnement (SaaS) eines irischen Anbieters im Reverse-Charge-Verfahren, gebucht als zeitlich befristete Softwarenutzung.",
+          "en": "Monthly cloud software subscription (SaaS) from an Irish provider under reverse charge, booked as time-limited software usage rights."
+        }
+      }
+    },
+    "inputTokens": 5464,
+    "outputTokens": 1541,
+    "costUsd": 0.052676,
+    "latencyMs": 12899,
+    "fallbackUsed": false,
+    "recordedAt": "2026-10-31T12:57:29.372Z"
+  },
+  "05-tankstelle": {
+    "model": "claude-opus-5-5",
+    "extraction": {
+      "documentType": "receipt",
+      "language": "de",
+      "currency": "EUR",
+      "amountsAre": "gross",
+      "vendor": {
+        "name": {
+          "value": "AUTOHOF GRÜNEWALD",
+          "source": "AUTOHOF GRÜNEWALD",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Gewerbering 3, 34560 Fritzlar",
+          "source": "Gewerbering 3 · 34560 Fritzlar",
+          "confidence": "high"
+        },
+        "vatId": {
+          "value": "DE268431758",
+          "source": "USt-IdNr. DE268431758",
+          "confidence": "high"
+        },
+        "taxNumber": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        }
+      },
+      "recipient": {
+        "name": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        },
+        "address": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        }
+      },
+      "invoiceNumber": {
+        "value": "58213",
+        "source": "Beleg-Nr. 58213",
+        "confidence": "high"
+      },
+      "issueDate": {
+        "value": "2026-10-24",
+        "source": "24.10.2026 07:52",
+        "confidence": "high"
+      },
+      "serviceDate": {
+        "value": null,
+        "source": null,
+        "confidence": "high"
+      },
+      "dueDate": {
+        "value": null,
+        "source": null,
+        "confidence": "high"
+      },
+      "lineItems": [
+        {
+          "description": "Säule 4 Super E10",
+          "quantity": 42.18,
+          "unitPrice": 1.789,
+          "vatRate": 19,
+          "amount": 75.46,
+          "source": "Säule 4 Super E10 42,18 l x 1,789 EUR/l 75,46 A"
+        },
+        {
+          "description": "Scheibenreiniger 1l",
+          "quantity": null,
+          "unitPrice": null,
+          "vatRate": 19,
+          "amount": 4.99,
+          "source": "Scheibenreiniger 1l 4,99 A"
+        }
+      ],
+      "vatBreakdown": [
+        {
+          "rate": 19,
+          "net": 67.61,
+          "vat": 12.84
+        }
+      ],
+      "totals": {
+        "net": {
+          "value": 67.61,
+          "source": "Netto 67,61",
+          "confidence": "high"
+        },
+        "vat": {
+          "value": 12.84,
+          "source": "MwSt 12,84",
+          "confidence": "high"
+        },
+        "gross": {
+          "value": 80.45,
+          "source": "Gesamt EUR 80,45",
+          "confidence": "high"
+        },
+        "tip": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        }
+      },
+      "payment": {
+        "iban": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        },
+        "bic": {
+          "value": null,
+          "source": null,
+          "confidence": "high"
+        },
+        "method": {
+          "value": "card",
+          "source": "girocard",
+          "confidence": "high"
+        }
+      },
+      "reverseCharge": false,
+      "booking": {
+        "account": "4530",
+        "accountName": "Laufende Kfz-Betriebskosten",
+        "reason": {
+          "de": "Tankbeleg für Kraftstoff und Scheibenreiniger gehört zu den laufenden Kfz-Betriebskosten.",
+          "en": "Fuel receipt for petrol and windscreen washer fluid belongs to running vehicle operating costs."
+        }
+      }
+    },
+    "inputTokens": 5050,
+    "outputTokens": 1052,
+    "costUsd": 0.04124,
+    "latencyMs": 10035,
+    "fallbackUsed": false,
+    "recordedAt": "2026-10-31T12:57:39.413Z"
+  }
+}
