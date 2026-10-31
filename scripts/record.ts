@@ -17,7 +17,9 @@ const runs: Record<string, ExtractionRun> = existsSync(OUT)
   ? JSON.parse(readFileSync(OUT, 'utf8'))
   : {}
 
-const client = new Anthropic()
+// Pin the public API: shells started from tools like Claude Code can inherit an
+// ANTHROPIC_BASE_URL that points at a local proxy, which rejects a plain API key.
+const client = new Anthropic({ baseURL: 'https://api.anthropic.com' })
 
 for (const sample of SAMPLES) {
   if (only && sample.id !== only) continue
