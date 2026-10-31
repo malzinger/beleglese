@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest'
 import { SAMPLES, type Truth } from '../samples'
 import { germanVatIdValid, ibanValid, runChecks, verdict, type CheckId } from './checks'
 import { score } from './evaluate'
-import { Extraction } from './schema'
+import { z } from 'zod'
+import { Extraction, fromWire, WireExtraction } from './schema'
 
 const TODAY = new Date('2026-10-31T12:00:00Z')
 
@@ -174,5 +175,59 @@ describe('score', () => {
     const rows = score(e, t)
     expect(rows.find((r) => r.field === 'vendorName')?.ok).toBe(true)
     expect(rows.find((r) => r.field === 'invoiceNumber')?.ok).toBe(true)
+  })
+})
+
+describe('wire schema', () => {
+  // Structured outputs reject schemas with more than 16 nullable or union-typed fields.
+  it('stays under the API limit for nullable fields', () => {
+    let unions = 0
+    const walk = (v: unknown): void => {
+      if (Array.isArray(v)) return v.forEach(walk)
+      if (v && typeof v === 'object') {
+        const o = v as Record<string, unknown>
+        if (Array.isArray(o.anyOf) || Array.isArray(o.type)) unions++
+        Object.values(o).forEach(walk)
+      }
+    }
+    walk(z.toJSONSchema(WireExtraction))
+    expect(unions).toBeLessThanOrEqual(16)
+  })
+
+  it('turns empty strings back into missing values', () => {
+    const e = fromTruth(sample('02-trattoria').truth)
+    const blank = { value: '', source: '', confidence: 'high' as const }
+    const wire = WireExtraction.parse({
+      ...e,
+      vendor: {
+        ...e.vendor,
+        vatId: blank,
+        taxNumber: { value: '214/5678/1234', source: 'St.-Nr. 214/5678/1234', confidence: 'high' },
+        name: { ...e.vendor.name, source: e.vendor.name.source ?? '' },
+        address: { ...e.vendor.address, source: e.vendor.address.source ?? '' },
+      },
+      recipient: { name: blank, address: blank },
+      invoiceNumber: { value: '0387', source: 'Bon 0387', confidence: 'high' },
+      issueDate: { value: '2026-10-17', source: '17.10.2026', confidence: 'high' },
+      serviceDate: blank,
+      dueDate: blank,
+      totals: {
+        net: { value: null, source: '', confidence: 'high' },
+        vat: { value: null, source: '', confidence: 'high' },
+        gross: { value: 53.3, source: '53,30', confidence: 'high' },
+        tip: { value: 4.7, source: '4,70', confidence: 'medium' },
+      },
+      payment: {
+        iban: blank,
+        bic: blank,
+        method: { value: 'card', source: 'Kartenzahlung', confidence: 'high' },
+      },
+    })
+    const back = fromWire(wire)
+    expect(back.vendor.vatId).toEqual({ value: null, source: null, confidence: 'high' })
+    expect(back.dueDate.value).toBeNull()
+    expect(back.totals.net.source).toBeNull()
+    expect(back.totals.tip.value).toBe(4.7)
+    expect(Extraction.safeParse(back).success).toBe(true)
   })
 })

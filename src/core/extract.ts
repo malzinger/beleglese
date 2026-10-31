@@ -1,6 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { betaZodOutputFormat } from '@anthropic-ai/sdk/helpers/beta/zod'
-import { Extraction } from './schema'
+import { fromWire, WireExtraction } from './schema'
+import type { Extraction } from './schema'
 
 export const MODEL = 'claude-opus-5-5'
 /** USD per million tokens for MODEL, used to show what a run cost. */
@@ -60,7 +61,7 @@ export async function extract(client: Anthropic, doc: DocumentInput): Promise<Ex
     betas: ['server-side-fallback-2026-07-01'],
     fallbacks: 'default',
     system: SYSTEM,
-    output_config: { effort: 'medium', format: betaZodOutputFormat(Extraction) },
+    output_config: { effort: 'medium', format: betaZodOutputFormat(WireExtraction) },
     messages: [
       {
         role: 'user',
@@ -72,8 +73,9 @@ export async function extract(client: Anthropic, doc: DocumentInput): Promise<Ex
 
   if (response.stop_reason === 'refusal') throw new ExtractionError('refusal')
   if (response.stop_reason === 'max_tokens') throw new ExtractionError('truncated')
-  const extraction = response.parsed_output
-  if (!extraction) throw new ExtractionError('unparsed')
+  const wire = response.parsed_output
+  if (!wire) throw new ExtractionError('unparsed')
+  const extraction = fromWire(wire)
 
   const { usage } = response
   const cacheRead = usage.cache_read_input_tokens ?? 0
