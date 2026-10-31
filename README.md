@@ -2,6 +2,10 @@
 
 Receipts and invoices in, checked booking data out. Claude reads the document; ordinary code then checks what it read.
 
+**Live demo:** https://malzinger.github.io/beleglese/
+
+![Beleglese flagging an invoice whose line items do not add up](docs/hero.png)
+
 ## How it works
 
 1. **Read.** The document goes to Claude (Opus 5.5) as a PDF or image. A Zod schema enforced through structured outputs fixes the shape of the answer: supplier, VAT ID, dates, line items, VAT table, totals, IBAN, reverse charge and a suggested SKR03 account. Every field carries the verbatim text it was read from and a confidence level. The prompt asks Claude to transcribe, not to correct, so a mistake on the document stays visible.
