@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 640px;
+        height: 860px;
+        overflow: hidden;
+      }
+      body {
+        background:
+          radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.1), transparent 60%),
+          repeating-linear-gradient(92deg, #5b4636 0 18px, #614b3a 18px 31px, #574233 31px 52px),
+          #5b4636;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        perspective: 1400px;
+      }
+      .slip {
+        width: 360px;
+        padding: 30px 24px 40px;
+        background: #f7f5ee;
+        color: #333;
+        font:
+          14px/1.55 Consolas,
+          'Courier New',
+          monospace;
+        transform: rotateX(8deg) rotateZ(-3deg) translateY(-6px);
+        box-shadow:
+          18px 26px 30px rgba(0, 0, 0, 0.45),
+          0 0 1px rgba(0, 0, 0, 0.3);
+        filter: blur(0.55px) contrast(0.92) brightness(0.97);
+        position: relative;
+      }
+      .slip::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(
+            170deg,
+            rgba(0, 0, 0, 0) 40%,
+            rgba(0, 0, 0, 0.07) 41%,
+            rgba(0, 0, 0, 0) 46%
+          ),
+          linear-gradient(
+            8deg,
+            rgba(0, 0, 0, 0) 62%,
+            rgba(0, 0, 0, 0.06) 63%,
+            rgba(0, 0, 0, 0) 68%
+          ),
+          linear-gradient(120deg, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.1));
+      }
+      .c {
+        text-align: center;
+      }
+      .b {
+        font-weight: 700;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+      }
+      .hr {
+        border-top: 1px dashed #888;
+        margin: 9px 0;
+      }
+      .sm {
+        font-size: 12px;
+      }
+      .faded {
+        opacity: 0.62;
+      }
+      .demo {
+        font-size: 9px;
+        color: #999;
+        text-align: center;
+        margin-top: 12px;
+        letter-spacing: 1px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scene">
+      <div class="slip">
+        <div class="c b" style="font-size: 19px; letter-spacing: 1px">AUTOHOF GRÜNEWALD</div>
+        <div class="c sm">Gewerbering 3 · 34560 Fritzlar<br />USt-IdNr. DE268431758</div>
+        <div class="hr"></div>
+        <div class="row sm"><span>24.10.2026 07:52</span><span>Beleg-Nr. 58213</span></div>
+        <div class="hr"></div>
+        <div class="row"><span>Säule 4 Super E10</span><span></span></div>
+        <div class="row"><span>&nbsp;42,18 l x 1,789 EUR/l</span><span>75,46 A</span></div>
+        <div class="row faded"><span>Scheibenreiniger 1l</span><span>4,99 A</span></div>
+        <div class="hr"></div>
+        <div class="row b" style="font-size: 17px"><span>Gesamt EUR</span><span>80,45</span></div>
+        <div class="hr"></div>
+        <div class="row sm"><span>A = 19% MwSt</span><span></span></div>
+        <div class="row sm"><span>Netto 67,61</span><span>MwSt 12,84</span></div>
+        <div class="hr"></div>
+        <div class="row"><span>girocard</span><span>80,45</span></div>
+        <div class="row sm faded"><span>Terminal 6114 0937</span><span>Genehmigt</span></div>
+        <div class="hr"></div>
+        <div class="c sm">Gute Fahrt!</div>
+        <div class="demo">BEISPIELBELEG · FIKTIVER BETRIEB</div>
+      </div>
+    </div>
+  </body>
+</html>

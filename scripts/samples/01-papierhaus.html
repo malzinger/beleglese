@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @page {
+        size: A4;
+        margin: 0;
+      }
+      body {
+        margin: 0;
+        background: #fff;
+        font:
+          13px/1.45 Arial,
+          Helvetica,
+          sans-serif;
+        color: #1d1d1b;
+      }
+      .page {
+        width: 794px;
+        height: 1123px;
+        padding: 56px 64px;
+        box-sizing: border-box;
+        position: relative;
+      }
+      .brand {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      .logo {
+        font:
+          700 26px Georgia,
+          serif;
+        letter-spacing: -0.5px;
+        color: #24456b;
+      }
+      .logo small {
+        display: block;
+        font:
+          12px Arial,
+          sans-serif;
+        color: #6b7b8c;
+        letter-spacing: 0.3px;
+        margin-top: 2px;
+      }
+      .sender-line {
+        font-size: 9.5px;
+        color: #555;
+        border-bottom: 1px solid #999;
+        display: inline-block;
+        margin: 48px 0 6px;
+      }
+      .addr {
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .meta {
+        position: absolute;
+        right: 64px;
+        top: 150px;
+        font-size: 12px;
+      }
+      .meta td {
+        padding: 1px 0 1px 18px;
+      }
+      .meta td:first-child {
+        color: #555;
+        padding-left: 0;
+      }
+      h1 {
+        font:
+          700 20px Arial,
+          sans-serif;
+        margin: 70px 0 6px;
+      }
+      table.items {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 18px;
+        font-size: 12.5px;
+      }
+      .items th {
+        text-align: left;
+        border-bottom: 1.5px solid #24456b;
+        padding: 6px 4px;
+        font-weight: 700;
+        color: #24456b;
+      }
+      .items td {
+        padding: 7px 4px;
+        border-bottom: 1px solid #ddd;
+      }
+      .r {
+        text-align: right;
+      }
+      .sum {
+        width: 300px;
+        margin-left: auto;
+        margin-top: 14px;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .sum td {
+        padding: 4px 4px;
+      }
+      .sum tr.total td {
+        border-top: 1.5px solid #24456b;
+        font-weight: 700;
+        font-size: 14px;
+      }
+      .terms {
+        margin-top: 36px;
+        font-size: 12.5px;
+      }
+      footer {
+        position: absolute;
+        bottom: 40px;
+        left: 64px;
+        right: 64px;
+        border-top: 1px solid #ccc;
+        padding-top: 10px;
+        font-size: 9.5px;
+        color: #555;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      .demo {
+        position: absolute;
+        top: 18px;
+        right: 64px;
+        font-size: 9px;
+        color: #999;
+        letter-spacing: 1px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="demo">BEISPIELBELEG · FIKTIVE FIRMA</div>
+      <div class="brand">
+        <div class="logo">
+          Papierhaus Lindner<small>Bürobedarf &amp; Büroeinrichtung seit 1987</small>
+        </div>
+      </div>
+
+      <div class="sender-line">Papierhaus Lindner GmbH · Gohliser Straße 41 · 04155 Leipzig</div>
+      <div class="addr">
+        Studio Nordlicht UG (haftungsbeschränkt)<br />
+        z. Hd. Frau Petersen<br />
+        Karl-Heine-Straße 12<br />
+        04229 Leipzig
+      </div>
+
+      <table class="meta">
+        <tr>
+          <td>Rechnungsnummer</td>
+          <td>RE-2026-0412</td>
+        </tr>
+        <tr>
+          <td>Rechnungsdatum</td>
+          <td>08.10.2026</td>
+        </tr>
+        <tr>
+          <td>Lieferdatum</td>
+          <td>06.10.2026</td>
+        </tr>
+        <tr>
+          <td>Kundennummer</td>
+          <td>K-10388</td>
+        </tr>
+      </table>
+
+      <h1>Rechnung</h1>
+      <p>
+        Sehr geehrte Frau Petersen,<br />vielen Dank für Ihren Auftrag. Wir berechnen Ihnen folgende
+        Lieferung:
+      </p>
+
+      <table class="items">
+        <thead>
+          <tr>
+            <th>Pos.</th>
+            <th>Artikel</th>
+            <th class="r">Menge</th>
+            <th class="r">Einzelpreis</th>
+            <th class="r">Gesamt</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Kopierpapier A4, 80 g/m², 500 Blatt</td>
+            <td class="r">5</td>
+            <td class="r">4,90 €</td>
+            <td class="r">24,50 €</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Toner schwarz, kompatibel LaserJet M404</td>
+            <td class="r">2</td>
+            <td class="r">38,90 €</td>
+            <td class="r">77,80 €</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Ordner breit 8 cm, Graphit</td>
+            <td class="r">10</td>
+            <td class="r">2,79 €</td>
+            <td class="r">27,90 €</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Bürodrehstuhl „Ergo 3“, Stoff anthrazit</td>
+            <td class="r">1</td>
+            <td class="r">189,00 €</td>
+            <td class="r">189,00 €</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="sum">
+        <tr>
+          <td>Summe netto</td>
+          <td class="r">319,20 €</td>
+        </tr>
+        <tr>
+          <td>zzgl. 19 % USt.</td>
+          <td class="r">60,65 €</td>
+        </tr>
+        <tr class="total">
+          <td>Rechnungsbetrag</td>
+          <td class="r">379,85 €</td>
+        </tr>
+      </table>
+
+      <div class="terms">
+        Zahlbar innerhalb von 14 Tagen bis zum <b>22.10.2026</b> ohne Abzug.<br />
+        Bitte geben Sie bei der Überweisung die Rechnungsnummer an.
+      </div>
+
+      <footer>
+        <div>Papierhaus Lindner GmbH<br />Gohliser Straße 41<br />04155 Leipzig</div>
+        <div>
+          Geschäftsführung: Hanna Lindner<br />HRB 31877, AG Leipzig<br />USt-IdNr.: DE 284 619 375
+        </div>
+        <div>Commerzbank Leipzig<br />IBAN: DE89 3704 0044 0532 0130 00<br />BIC: COBADEFFXXX</div>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+dist
+node_modules
+coverage
+docs/*.png
+package-lock.json
+scripts/samples
+public/samples
