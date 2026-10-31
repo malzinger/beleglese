@@ -36,7 +36,7 @@ const SYSTEM = `You read German and international receipts and invoices for book
 
 Transcribe what is printed. Do not compute, complete or correct values: if a total is not printed, return null, and if the printed numbers do not add up, return them as printed anyway. A separate program checks the arithmetic, and it can only catch mistakes on the document if you report the document faithfully.
 
-For every sourced field, copy the exact printed text into source. Use confidence low when the text is hard to read or the value is inferred rather than printed.
+For every field with a value, add an evidence entry with the exact printed text it came from. Use confidence low when the text is hard to read or the value is inferred rather than printed. Leave a field empty when the document does not show it.
 
 Normalise numbers to plain decimals (1.234,50 becomes 1234.5) and dates to YYYY-MM-DD.
 

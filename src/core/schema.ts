@@ -99,98 +99,119 @@ export type Sourced<T> = {
 }
 
 /*
- * What is actually sent to the API. Structured outputs allow at most 16 nullable or union
- * fields per schema, so absent text travels as an empty string and only amounts stay
- * nullable. fromWire() turns it back into the Extraction shape the rest of the app uses.
+ * What is actually sent to the API. Structured outputs compile the schema into a grammar
+ * with limits on its size and on nullable fields, so the request uses a flat shape: plain
+ * fields with empty strings for anything not printed, nullable numbers only for amounts,
+ * and one evidence list with the verbatim source and confidence per field. fromWire()
+ * rebuilds the Extraction shape the rest of the app uses.
  */
 
-const wireSource = z
-  .string()
-  .describe(
-    'The exact text on the document this value was read from, copied verbatim. Empty string if not printed.',
-  )
+const TEXT_FIELDS = [
+  'vendorName',
+  'vendorAddress',
+  'vendorVatId',
+  'vendorTaxNumber',
+  'recipientName',
+  'recipientAddress',
+  'invoiceNumber',
+  'issueDate',
+  'serviceDate',
+  'dueDate',
+  'iban',
+  'bic',
+  'paymentMethod',
+] as const
+const MONEY_FIELDS = ['net', 'vat', 'gross', 'tip'] as const
+const EVIDENCE_FIELDS = [...TEXT_FIELDS, ...MONEY_FIELDS] as const
 
-function wireText(description: string) {
-  return z.object({
-    value: z.string().describe(`${description}. Empty string if not printed.`),
-    source: wireSource,
-    confidence,
-  })
-}
+const blank = (what: string) => z.string().describe(`${what}. Empty string if not printed.`)
+const maybeMoney = (what: string) => money.nullable().describe(`${what}. null if not printed.`)
 
-function wireMoney(description: string) {
-  return z.object({ value: money.nullable().describe(description), source: wireSource, confidence })
-}
-
-// extend() replaces the listed fields and keeps everything else as is.
-export const WireExtraction = Extraction.extend({
-  vendor: z.object({
-    name: wireText('Issuing company or shop'),
-    address: wireText('Full postal address on one line, comma separated'),
-    vatId: wireText('VAT ID (USt-IdNr.) without spaces, e.g. DE123456789'),
-    taxNumber: wireText('Tax number (Steuernummer) as printed'),
-  }),
-  recipient: z.object({
-    name: wireText('Billed company or person'),
-    address: wireText('Full postal address on one line, comma separated'),
-  }),
-  invoiceNumber: wireText('Invoice or receipt number'),
-  issueDate: wireText('Date the document was issued, ISO YYYY-MM-DD'),
-  serviceDate: wireText('Delivery or service date or period as printed (Leistungsdatum)'),
-  dueDate: wireText('Payment due date, ISO YYYY-MM-DD. Only if printed or stated as a fixed date'),
-  totals: z.object({
-    net: wireMoney('Total net amount'),
-    vat: wireMoney('Total VAT amount'),
-    gross: wireMoney('Total amount payable before any tip'),
-    tip: wireMoney('Tip or Trinkgeld, if printed'),
-  }),
-  payment: z.object({
-    iban: wireText('IBAN without spaces'),
-    bic: wireText('BIC'),
-    method: wireText('How it was or should be paid, e.g. transfer, card, cash'),
-  }),
+export const WireExtraction = z.object({
+  documentType: Extraction.shape.documentType,
+  language: Extraction.shape.language,
+  currency: Extraction.shape.currency,
+  amountsAre: Extraction.shape.amountsAre,
+  vendorName: blank('Issuing company or shop'),
+  vendorAddress: blank('Full postal address on one line, comma separated'),
+  vendorVatId: blank('VAT ID (USt-IdNr.) without spaces, e.g. DE123456789'),
+  vendorTaxNumber: blank('Tax number (Steuernummer) as printed'),
+  recipientName: blank('Billed company or person'),
+  recipientAddress: blank('Full postal address on one line, comma separated'),
+  invoiceNumber: blank('Invoice or receipt number'),
+  issueDate: blank('Date the document was issued, ISO YYYY-MM-DD'),
+  serviceDate: blank('Delivery or service date or period as printed (Leistungsdatum)'),
+  dueDate: blank('Payment due date, ISO YYYY-MM-DD, only if printed or stated as a fixed date'),
+  iban: blank('IBAN without spaces'),
+  bic: blank('BIC'),
+  paymentMethod: blank('How it was or should be paid, e.g. transfer, card, cash'),
+  net: maybeMoney('Total net amount'),
+  vat: maybeMoney('Total VAT amount'),
+  gross: maybeMoney('Total amount payable before any tip'),
+  tip: maybeMoney('Tip or Trinkgeld'),
+  lineItems: Extraction.shape.lineItems,
+  vatBreakdown: Extraction.shape.vatBreakdown,
+  reverseCharge: Extraction.shape.reverseCharge,
+  bookingAccount: z.string().describe('Suggested SKR03 expense account number, e.g. 4930'),
+  bookingAccountName: z.string().describe('German name of that SKR03 account'),
+  bookingReasonDe: z.string().describe('One short German sentence explaining the account choice'),
+  bookingReasonEn: z.string().describe('The same sentence in English'),
+  evidence: z
+    .array(
+      z.object({
+        field: z.enum(EVIDENCE_FIELDS),
+        text: z.string().describe('The exact printed text the value was read from, verbatim'),
+        confidence,
+      }),
+    )
+    .describe('One entry for every field above that has a value.'),
 })
 
 export type WireExtraction = z.infer<typeof WireExtraction>
 
-type WireText = { value: string; source: string; confidence: Sourced<string>['confidence'] }
-type WireMoney = { value: number | null; source: string; confidence: Sourced<number>['confidence'] }
-
-const text = (f: WireText): Sourced<string> => ({
-  value: f.value.trim() === '' ? null : f.value,
-  source: f.source.trim() === '' ? null : f.source,
-  confidence: f.confidence,
-})
-const amount = (f: WireMoney): Sourced<number> => ({
-  value: f.value,
-  source: f.source.trim() === '' ? null : f.source,
-  confidence: f.confidence,
-})
-
 export function fromWire(w: WireExtraction): Extraction {
+  const evidence = new Map(w.evidence.map((e) => [e.field, e]))
+  const meta = (field: (typeof EVIDENCE_FIELDS)[number]) => {
+    const e = evidence.get(field)
+    return {
+      source: e && e.text.trim() !== '' ? e.text : null,
+      confidence: e?.confidence ?? ('high' as const),
+    }
+  }
+  const text = (field: (typeof TEXT_FIELDS)[number]): Sourced<string> => {
+    const v = w[field].trim()
+    return { value: v === '' ? null : v, ...meta(field) }
+  }
+  const amount = (field: (typeof MONEY_FIELDS)[number]): Sourced<number> => ({
+    value: w[field],
+    ...meta(field),
+  })
+
   return {
-    ...w,
+    documentType: w.documentType,
+    language: w.language,
+    currency: w.currency,
+    amountsAre: w.amountsAre,
     vendor: {
-      name: text(w.vendor.name),
-      address: text(w.vendor.address),
-      vatId: text(w.vendor.vatId),
-      taxNumber: text(w.vendor.taxNumber),
+      name: text('vendorName'),
+      address: text('vendorAddress'),
+      vatId: text('vendorVatId'),
+      taxNumber: text('vendorTaxNumber'),
     },
-    recipient: { name: text(w.recipient.name), address: text(w.recipient.address) },
-    invoiceNumber: text(w.invoiceNumber),
-    issueDate: text(w.issueDate),
-    serviceDate: text(w.serviceDate),
-    dueDate: text(w.dueDate),
-    totals: {
-      net: amount(w.totals.net),
-      vat: amount(w.totals.vat),
-      gross: amount(w.totals.gross),
-      tip: amount(w.totals.tip),
-    },
-    payment: {
-      iban: text(w.payment.iban),
-      bic: text(w.payment.bic),
-      method: text(w.payment.method),
+    recipient: { name: text('recipientName'), address: text('recipientAddress') },
+    invoiceNumber: text('invoiceNumber'),
+    issueDate: text('issueDate'),
+    serviceDate: text('serviceDate'),
+    dueDate: text('dueDate'),
+    lineItems: w.lineItems,
+    vatBreakdown: w.vatBreakdown,
+    totals: { net: amount('net'), vat: amount('vat'), gross: amount('gross'), tip: amount('tip') },
+    payment: { iban: text('iban'), bic: text('bic'), method: text('paymentMethod') },
+    reverseCharge: w.reverseCharge,
+    booking: {
+      account: w.bookingAccount,
+      accountName: w.bookingAccountName,
+      reason: { de: w.bookingReasonDe, en: w.bookingReasonEn },
     },
   }
 }

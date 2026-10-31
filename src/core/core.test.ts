@@ -179,55 +179,88 @@ describe('score', () => {
 })
 
 describe('wire schema', () => {
-  // Structured outputs reject schemas with more than 16 nullable or union-typed fields.
-  it('stays under the API limit for nullable fields', () => {
-    let unions = 0
+  const unions = (schema: unknown) => {
+    let n = 0
     const walk = (v: unknown): void => {
       if (Array.isArray(v)) return v.forEach(walk)
       if (v && typeof v === 'object') {
         const o = v as Record<string, unknown>
-        if (Array.isArray(o.anyOf) || Array.isArray(o.type)) unions++
+        if (Array.isArray(o.anyOf) || Array.isArray(o.type)) n++
         Object.values(o).forEach(walk)
       }
     }
-    walk(z.toJSONSchema(WireExtraction))
-    expect(unions).toBeLessThanOrEqual(16)
+    walk(schema)
+    return n
+  }
+
+  // Structured outputs reject schemas with more than 16 nullable or union-typed fields
+  // and grammars that grow too large, so the request schema stays flat.
+  it('stays flat and under the nullable-field limit', () => {
+    const json = z.toJSONSchema(WireExtraction) as { properties: Record<string, unknown> }
+    expect(unions(json)).toBeLessThanOrEqual(16)
+    const nested = Object.values(json.properties).filter(
+      (p) => (p as { type?: unknown }).type === 'object',
+    )
+    expect(nested).toEqual([])
   })
 
-  it('turns empty strings back into missing values', () => {
-    const e = fromTruth(sample('02-trattoria').truth)
-    const blank = { value: '', source: '', confidence: 'high' as const }
+  it('rebuilds the extraction with sources, confidence and missing values', () => {
     const wire = WireExtraction.parse({
-      ...e,
-      vendor: {
-        ...e.vendor,
-        vatId: blank,
-        taxNumber: { value: '214/5678/1234', source: 'St.-Nr. 214/5678/1234', confidence: 'high' },
-        name: { ...e.vendor.name, source: e.vendor.name.source ?? '' },
-        address: { ...e.vendor.address, source: e.vendor.address.source ?? '' },
-      },
-      recipient: { name: blank, address: blank },
-      invoiceNumber: { value: '0387', source: 'Bon 0387', confidence: 'high' },
-      issueDate: { value: '2026-10-17', source: '17.10.2026', confidence: 'high' },
-      serviceDate: blank,
-      dueDate: blank,
-      totals: {
-        net: { value: null, source: '', confidence: 'high' },
-        vat: { value: null, source: '', confidence: 'high' },
-        gross: { value: 53.3, source: '53,30', confidence: 'high' },
-        tip: { value: 4.7, source: '4,70', confidence: 'medium' },
-      },
-      payment: {
-        iban: blank,
-        bic: blank,
-        method: { value: 'card', source: 'Kartenzahlung', confidence: 'high' },
-      },
+      documentType: 'receipt',
+      language: 'de',
+      currency: 'EUR',
+      amountsAre: 'gross',
+      vendorName: 'Trattoria Sole',
+      vendorAddress: 'Ehrenstraße 58, 50672 Köln',
+      vendorVatId: '',
+      vendorTaxNumber: '214/5678/1234',
+      recipientName: '',
+      recipientAddress: '',
+      invoiceNumber: '0387',
+      issueDate: '2026-10-17',
+      serviceDate: '',
+      dueDate: '',
+      iban: '',
+      bic: '',
+      paymentMethod: 'card',
+      net: null,
+      vat: null,
+      gross: 53.3,
+      tip: 4.7,
+      lineItems: [
+        {
+          description: 'Pizza',
+          quantity: 2,
+          unitPrice: 9.5,
+          vatRate: 7,
+          amount: 19,
+          source: '2 x Pizza',
+        },
+      ],
+      vatBreakdown: [{ rate: 7, net: 17.76, vat: 1.24 }],
+      reverseCharge: false,
+      bookingAccount: '4650',
+      bookingAccountName: 'Bewirtungskosten',
+      bookingReasonDe: 'Restaurantbesuch.',
+      bookingReasonEn: 'Restaurant visit.',
+      evidence: [
+        { field: 'vendorName', text: 'TRATTORIA SOLE', confidence: 'high' },
+        { field: 'invoiceNumber', text: 'Bon 0387', confidence: 'high' },
+        { field: 'tip', text: 'Trinkgeld 4,70', confidence: 'medium' },
+      ],
     })
-    const back = fromWire(wire)
-    expect(back.vendor.vatId).toEqual({ value: null, source: null, confidence: 'high' })
-    expect(back.dueDate.value).toBeNull()
-    expect(back.totals.net.source).toBeNull()
-    expect(back.totals.tip.value).toBe(4.7)
-    expect(Extraction.safeParse(back).success).toBe(true)
+    const e = fromWire(wire)
+    expect(Extraction.safeParse(e).success).toBe(true)
+    expect(e.vendor.name).toEqual({
+      value: 'Trattoria Sole',
+      source: 'TRATTORIA SOLE',
+      confidence: 'high',
+    })
+    expect(e.vendor.vatId.value).toBeNull()
+    expect(e.dueDate.value).toBeNull()
+    expect(e.invoiceNumber.source).toBe('Bon 0387')
+    expect(e.totals.net.value).toBeNull()
+    expect(e.totals.tip).toEqual({ value: 4.7, source: 'Trinkgeld 4,70', confidence: 'medium' })
+    expect(e.booking.reason.en).toBe('Restaurant visit.')
   })
 })
